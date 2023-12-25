@@ -4,7 +4,12 @@
 
 Utilities for Competitive Programming. 
 
-Currently supports downloading of samples, and running local tests with samples.
+Features:
+- Download samples from [kattis](https://open.kattis.com/), [aceptaelreto](https://aceptaelreto.com/).
+- Test in c, cpp, python, java, rust.
+- Submit to kattis.
+
+Tests only for complete textual match, ignoring leading and trailing whistespaces. 
 
 ## Installation
 Assuming you have a [Python3](https://www.python.org/) distribution with [pip](https://pip.pypa.io/en/stable/installing/), install the package running:
@@ -31,4 +36,10 @@ To test a solution or set of solutions run
 ```bash
 cptest <problem>/<solution(s)>
 ```
-Pro-tip: use glob patterns like ```problem/code*``` or ```problem/*.py```.
+Pro-tip: you can use glob patterns like ```problem/code*``` or ```problem/*.py```.
+
+### cpsubmit
+To submit a solution (only kattis)
+```bash
+cpsubmit <problem>/<solution(s)>
+```

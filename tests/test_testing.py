@@ -39,12 +39,21 @@ fn main() {
 }
 """
 
+java_successor = r"""import java.util.Scanner;
+public class code {
+    public static void main(String[] args) {
+        System.out.println(new Scanner(System.in).nextInt() + 1);
+    }
+}
+"""
+
 
 successor_codes = {
     "py": py_successor,
     "c": c_successor,
     "cpp": cpp_successor,
     "rs": rs_successor,
+    "java": java_successor,
 }
 
 
@@ -58,7 +67,8 @@ int main(){int n;scanf("%d",&n);printf("%d",n+1);return 1;}"""
 
 sleep_python = "import time;time.sleep(100)"
 
-def test_testing_success():
+
+def perform_success_testing(language):
     config.config["sample_format"] = "inputs-outputs"
     try:
         temp_dir = tempfile.mkdtemp(prefix="cputils_test_")
@@ -73,17 +83,36 @@ def test_testing_success():
         with open("outputs/1.txt", "w") as file:
             file.write("2")
 
-        for lang, code in successor_codes.items():
-            with open(f"code.{lang}", "w") as file:
-                file.write(code)
+        with open(f"code.{language}", "w") as file:
+            file.write(successor_codes[language])
 
-            times = testing.test_code(f"code.{lang}")
-            assert len(times) == 1 and isinstance(times[0], float)
+        times = testing.test_code(f"code.{language}")
+        assert len(times) == 1 and isinstance(times[0], float)
 
     finally:
         os.chdir(original_cwd)
         if os.path.exists(temp_dir):
             shutil.rmtree(temp_dir)
+
+
+def test_python_success():
+    perform_success_testing("py")
+
+
+def test_c_success():
+    perform_success_testing("c")
+
+
+def test_cpp_success():
+    perform_success_testing("cpp")
+
+
+def test_rust_success():
+    perform_success_testing("rs")
+
+
+def test_java_success():
+    perform_success_testing("java")
 
 
 def test_testing_errors():
@@ -102,24 +131,23 @@ def test_testing_errors():
         with open("outputs/1.txt", "w") as file:
             file.write("2")
 
-        
         with open("code_WA.c", "w") as file:
             file.write(c_successor_WA)
 
         times = testing.test_code("code_WA.c")
-        assert len(times) == 1 and times[0]=="WA"
+        assert len(times) == 1 and times[0] == "WA"
 
         with open("code_IR.c", "w") as file:
             file.write(c_successor_IR)
 
         times = testing.test_code("code_IR.c")
-        assert len(times) == 1 and times[0]=="IR(1)"
+        assert len(times) == 1 and times[0] == "IR(1)"
 
         with open("code_TLE.py", "w") as file:
             file.write(sleep_python)
 
         times = testing.test_code("code_TLE.py")
-        assert len(times) == 1 and times[0]=="TLE(>1)"
+        assert len(times) == 1 and times[0] == "TLE(>1)"
 
     finally:
         os.chdir(original_cwd)
