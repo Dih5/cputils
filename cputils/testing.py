@@ -120,12 +120,8 @@ def test_code(code, verbose=False):
                 continue
             out = out.decode()
             reference = open(os.path.join(folder, input_to_output(folder, test))).read()
-            if (
-                out.strip() == reference.strip()
-            ):  # Allow for differences in trailing or heading new lines
-                if verbose:
-                    print(".", end="")
-            else:
+            # Allow for differences in trailing or heading new lines
+            if out.strip() != reference.strip():
                 times[-1] = "WA"
                 if verbose:
                     print(
@@ -133,6 +129,7 @@ def test_code(code, verbose=False):
                         % (test, reference, out),
                         file=sys.stderr,
                     )
+                    return times
 
         except subprocess.TimeoutExpired:
             times.append("TLE(>%g)" % config["timeout"])
@@ -142,21 +139,33 @@ def test_code(code, verbose=False):
 
 
 def main():
-    if len(sys.argv) < 2:
+    import argparse
+
+    # Create the argument parser
+    parser = argparse.ArgumentParser(description="Test code files or directories.")
+    parser.add_argument("paths", nargs="*", help="File(s) or folder to test.")
+    parser.add_argument("--verbose", action="store_true", help="Enable verbose output.")
+
+    # Parse the arguments
+    args = parser.parse_args()
+
+    if not args.paths:
         name = os.path.basename(sys.argv[0])
         print(
             "Usage:\n%s file(s): test the given files\n"
             "%s folder: test every supported file in the folder" % (name, name)
         )
     else:
-        files = sys.argv[1:]
-        if len(files) == 1 and os.path.isdir(files[0]):
-            d = files[0]
-            files = []
-            for ext in supported_extensions:
-                files.extend(glob(os.path.join(d, "*." + ext)))
+        files = []
+        for path in args.paths:
+            if os.path.isdir(path):
+                for ext in supported_extensions:
+                    files.extend(glob(os.path.join(path, "*." + ext)))
+            else:
+                files.append(path)
+
         for code in files:
-            times = test_code(code)
+            times = test_code(code, verbose=args.verbose)
 
             print(os.path.basename(code), end=", ")
             print(
