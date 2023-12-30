@@ -52,7 +52,7 @@ def input_to_output(folder, inp):
         raise NotImplementedError("Invalid sample format")
 
 
-supported_extensions = ["py", "c", "cpp", "rs", "java"]
+supported_extensions = ["py", "c", "cpp", "rs", "java", "rb", "sh"]
 
 
 def test_code(code, verbose=False):
@@ -92,6 +92,10 @@ def test_code(code, verbose=False):
         t1 = time.time()
         if language == "py":
             args = ["python", code]
+        elif language == "rb":
+            args = ["ruby", code]
+        elif language == "sh":
+            args = ["bash", code]
         elif language in {"c", "cpp", "rs"}:
             args = [os.path.join(folder, "a.out")]
         elif language == "java":
