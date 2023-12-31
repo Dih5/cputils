@@ -47,6 +47,10 @@ public class code {
 }
 """
 
+sh_successor = r"""read n;echo $((n+1))"""
+
+rb_successor = r"""puts gets.to_i+1"""
+
 
 successor_codes = {
     "py": py_successor,
@@ -54,6 +58,8 @@ successor_codes = {
     "cpp": cpp_successor,
     "rs": rs_successor,
     "java": java_successor,
+    "sh":sh_successor,
+    "rb":rb_successor,
 }
 
 
@@ -113,6 +119,12 @@ def test_rust_success():
 
 def test_java_success():
     perform_success_testing("java")
+
+def test_sh_success():
+    perform_success_testing("sh")
+
+def test_rb_success():
+    perform_success_testing("rb")
 
 
 def test_testing_errors():
