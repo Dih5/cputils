@@ -43,3 +43,19 @@ To submit a solution (only kattis)
 ```bash
 cpsubmit <problem>/<solution(s)>
 ```
+
+
+## Development
+### Testing
+
+Testing requires installing the test extra. Furthermore, some tests require the languages to be installed and available.
+
+To run all tests:
+```bash
+make test
+```
+
+To run a single test module:
+```bash
+pytest tests/test_<test_name>.py
+```
