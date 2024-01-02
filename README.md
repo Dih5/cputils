@@ -6,7 +6,7 @@ Utilities for Competitive Programming.
 
 Features:
 - Download samples from [kattis](https://open.kattis.com/), [aceptaelreto](https://aceptaelreto.com/).
-- Test in c, cpp, python, java, rust, ruby, bash.
+- Test in c, cpp, python, java, rust, ruby, bash, nim.
 - Submit to kattis.
 
 Tests only for complete textual match, ignoring leading and trailing whistespaces. 

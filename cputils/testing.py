@@ -52,7 +52,7 @@ def input_to_output(folder, inp):
         raise NotImplementedError("Invalid sample format")
 
 
-supported_extensions = ["py", "c", "cpp", "rs", "java", "rb", "sh"]
+supported_extensions = ["py", "c", "cpp", "rs", "java", "rb", "sh", "nim"]
 
 
 def test_code(code, verbose=False):
@@ -64,7 +64,7 @@ def test_code(code, verbose=False):
     tests = get_inputs(folder)
 
     # Compilation
-    if language in {"c", "cpp", "rs", "java"}:
+    if language in {"c", "cpp", "rs", "java", "nim"}:
         if language in {"c"}:
             args = ["gcc", code, "-lm", "-o", "a.out"]
 
@@ -74,6 +74,8 @@ def test_code(code, verbose=False):
             args = ["rustc", code, "-o", "a.out"]
         elif language == "java":
             args = ["javac", code]
+        elif language == "nim":
+            args = ["nim", "c", "--opt:speed", "-o:a.out", code]
 
         proc = subprocess.Popen(
             args,
@@ -96,7 +98,7 @@ def test_code(code, verbose=False):
             args = ["ruby", code]
         elif language == "sh":
             args = ["bash", code]
-        elif language in {"c", "cpp", "rs"}:
+        elif language in {"c", "cpp", "rs", "nim"}:
             args = [os.path.join(folder, "a.out")]
         elif language == "java":
             args = ["java", code.rsplit(".", 1)[0]]

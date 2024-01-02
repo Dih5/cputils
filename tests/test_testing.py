@@ -51,6 +51,10 @@ sh_successor = r"""read n;echo $((n+1))"""
 
 rb_successor = r"""puts gets.to_i+1"""
 
+nim_successor = r"""import strutils
+echo readLine(stdin).parseInt+1
+"""
+
 
 successor_codes = {
     "py": py_successor,
@@ -60,6 +64,7 @@ successor_codes = {
     "java": java_successor,
     "sh":sh_successor,
     "rb":rb_successor,
+    "nim":nim_successor,
 }
 
 
@@ -125,6 +130,9 @@ def test_sh_success():
 
 def test_rb_success():
     perform_success_testing("rb")
+
+def test_nim_success():
+    perform_success_testing("nim")
 
 
 def test_testing_errors():
