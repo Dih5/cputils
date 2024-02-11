@@ -8,7 +8,7 @@ sources = ["none", "kattis", "aceptaelreto"]
 
 format_help = """
 auto: Pick from the source or try to guess if none. Recommended option.
-inputs-outputs: Two folders with txt files with the same names.
+inputs-outputs: Two folders with txt files with the same names or with unique numbers in them, identifying each case.
 samples-in-ans: A single "samples" folder with files *.in and matching *.ans
 """
 

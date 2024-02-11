@@ -47,7 +47,22 @@ def input_to_output(folder, inp):
     if sample_format == "samples-in-ans":
         return inp[:-2] + "ans"
     elif sample_format == "inputs-outputs":
-        return os.path.join("outputs", os.path.basename(inp))
+        # Try exact match
+        candidate = os.path.join("outputs", os.path.basename(inp))
+        if os.path.isfile(candidate):
+            return candidate
+
+        # Otherwise, look for a single file with the same number in the name
+        number = "".join(filter(str.isdigit, inp))
+        matching_files = [filename for filename in os.listdir("outputs") if number in filename]
+        
+        if len(matching_files) == 1:
+            return os.path.join("outputs", matching_files[0])
+        elif not matching_files:
+            raise ValueError("No matching file found.")
+        else:
+            raise ValueError("Multiple matching files found.")
+
     else:
         raise NotImplementedError("Invalid sample format")
 
