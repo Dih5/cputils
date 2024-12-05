@@ -43,7 +43,7 @@ setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     name="cputils",
-    packages=find_packages(include=["cputils"], exclude=["demos", "tests", "docs"]),
+    packages=find_packages(include=["cputils", "cputils.*"], exclude=["demos", "tests", "docs"]),
     install_requires=[
         "yaconfig",
         "requests",
