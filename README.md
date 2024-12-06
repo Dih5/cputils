@@ -8,6 +8,7 @@ Features:
 - Download samples from [kattis](https://open.kattis.com/), [aceptaelreto](https://aceptaelreto.com/).
 - Test in c, cpp, python, java, rust, ruby, bash, nim.
 - Submit to kattis.
+- Interactive CLI menu.
 
 Tests only for complete textual match, ignoring leading and trailing whistespaces. 
 
@@ -43,6 +44,14 @@ To submit a solution (only kattis)
 ```bash
 cpsubmit <problem>/<solution(s)>
 ```
+
+### cpmenu
+To run an interactive CLI
+```bash
+cpmenu
+```
+
+Yo can also provide the problem and language with the arguments, or change it in the menu. See help (h) for more info.
 
 
 ## Development

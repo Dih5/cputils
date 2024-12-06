@@ -28,6 +28,12 @@ metaconfig = yaconfig.MetaConfig(
     yaconfig.Variable(
         "timeout", type=float, default="2", help="Timeout to run tests in seconds"
     ),
+    yaconfig.Variable(
+        "problem_dir", type=str, default="problems", help="Name of directory where problems are stored"
+    ),
+    yaconfig.Variable(
+        "editor", type=str, default="code", help="Name of the editor to run"
+    ),
 )
 
 config = yaconfig.Config(metaconfig)

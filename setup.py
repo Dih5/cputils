@@ -33,6 +33,7 @@ setup(
             "cpsamples=cputils.samples:main",
             "cptest=cputils.testing:main",
             "cpsubmit=cputils.submit:main",
+            "cpmenu=cputils.menu:main",
         ],
     },
     extras_require={
