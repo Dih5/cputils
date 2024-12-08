@@ -5,7 +5,7 @@
 Utilities for Competitive Programming. 
 
 Features:
-- Download samples from [kattis](https://open.kattis.com/), [aceptaelreto](https://aceptaelreto.com/).
+- Download samples from [kattis](https://open.kattis.com/), [aceptaelreto](https://aceptaelreto.com/), adventofcode[https://adventofcode.com/].
 - Test in c, cpp, python, java, rust, ruby, bash, nim.
 - Submit to kattis.
 - Interactive CLI menu.

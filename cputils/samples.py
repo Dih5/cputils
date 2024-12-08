@@ -2,6 +2,7 @@
 """Download problem samples"""
 import os
 import zipfile
+import re
 
 import requests
 
@@ -12,10 +13,21 @@ from .common import ensure_dir_exists
 
 def get_samples(problem):
     """Download the samples to the problem directory"""
-    ensure_dir_exists(problem)
     # Check previously download
     if config["source"] in {"kattis", "aceptaelreto"}:
         if os.path.isdir(os.path.join(problem, "samples")):
+            return False
+    elif config["source"]=="aoc":
+        # Expecting year-day
+        try:
+            year, day = problem.split("-")
+        except ValueError as e:
+            raise ValueError("In 'aoc', problem names are of the form 2020-15") from e
+        if os.path.isfile(os.path.join(year, day, "input.txt")):
+            return False
+    elif re.match(r"aoc\d+", config["source"]):
+        # Expecting day
+        if os.path.isfile(os.path.join(problem, "input.txt")):
             return False
 
     if config["source"] == "kattis":
@@ -45,6 +57,28 @@ def get_samples(problem):
 
         with open(os.path.join(problem, "samples", "1.ans"), "w") as f:
             f.write(soup.find(id="sampleOut").pre.text)
+
+    elif re.match(r"aoc\d*", config["source"]):
+        if config["source"]=="aoc":
+            # Expecting year-day
+            year, day = problem.split("-")
+            base_dir = os.path.join(year, day)
+        else:
+            year, day = config["source"][3:], problem
+            base_dir = problem
+
+        try:
+            from aocd import get_data
+        except ImportError as e:
+            raise ImportError("Install the advent-of-code-data package to download input")
+
+        sample = get_data(day=int(day), year=int(year))
+
+        ensure_dir_exists(base_dir)
+
+        with open(os.path.join(base_dir, "input.txt"), "w") as f:
+            f.write(sample)
+        
 
     else:
         raise NotImplementedError("Unknown source: %s" % config["source"])

@@ -4,7 +4,7 @@
 import yaconfig
 
 
-sources = ["none", "kattis", "aceptaelreto"]
+sources = ["none", "kattis", "aceptaelreto", "aoc", "aoc<year>"]
 
 format_help = """
 auto: Pick from the source or try to guess if none. Recommended option.
@@ -29,7 +29,7 @@ metaconfig = yaconfig.MetaConfig(
         "timeout", type=float, default="2", help="Timeout to run tests in seconds"
     ),
     yaconfig.Variable(
-        "problem_dir", type=str, default="problems", help="Name of directory where problems are stored"
+        "problem_dir", type=str, default="problems", help="Name of directory where problems are stored when using the menu"
     ),
     yaconfig.Variable(
         "editor", type=str, default="code", help="Name of the editor to run"
