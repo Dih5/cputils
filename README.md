@@ -5,7 +5,7 @@
 Utilities for Competitive Programming. 
 
 Features:
-- Download samples from [kattis](https://open.kattis.com/), [aceptaelreto](https://aceptaelreto.com/), adventofcode[https://adventofcode.com/].
+- Download samples from [kattis](https://open.kattis.com/), [aceptaelreto](https://aceptaelreto.com/), [adventofcode](https://adventofcode.com/).
 - Test in c, cpp, python, java, rust, ruby, bash, nim.
 - Submit to kattis.
 - Interactive CLI menu.
@@ -20,6 +20,9 @@ pip3 install cputils
 ```
 
 ## Usage
+Typically you'll want to work on a dedicated repo/folder for your task (solving the problems in a server, preparing problems...).
+You should first create a configuration file defining how cputils will work on that repo/folder and then use the CLI or the commands to work in it.
+
 ### cpconfig
 To create a config file, run
 ```bash
