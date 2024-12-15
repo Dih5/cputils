@@ -7,24 +7,67 @@ import subprocess
 from .config import config
 
 
-# getch-like function taken from
-# https://code.activestate.com/recipes/134892/
-class _GetchUnix:
+# getch-like function
+# based on https://code.activestate.com/recipes/134892/
+
+class _Getch:
+    """Gets a single character from standard input, not echoing to the screen and consuming everything else in the buffer"""
     def __init__(self):
-        import tty, sys
+        try:
+            self.impl = _GetchWindows()
+        except ImportError:
+            self.impl = _GetchUnix()
 
     def __call__(self):
-        import sys, tty, termios
+        return self.impl()
+
+class _GetchWindows:
+    def __init__(self):
+        import msvcrt
+
+    def __call__(self):
+        import msvcrt
+        ch = msvcrt.getch()
+        while msvcrt.kbhit():
+            msvcrt.getch()
+        
+        return ch
+
+class _GetchUnix:
+    def __init__(self):
+        import tty, termios, fcntl, os
+    def __call__(self):
+        import tty, termios, fcntl, os
         fd = sys.stdin.fileno()
+        # Save old terminal settings and file status flags
         old_settings = termios.tcgetattr(fd)
+        old_flags = fcntl.fcntl(fd, fcntl.F_GETFL)
         try:
-            tty.setraw(sys.stdin.fileno())
-            ch = sys.stdin.read(1)
+            # Set the terminal to raw mode to read a single character
+            tty.setraw(fd)
+            ch = sys.stdin.read(1) 
+
+            # Set non-blocking mode to drain the rest of the input
+            fcntl.fcntl(fd, fcntl.F_SETFL, old_flags | os.O_NONBLOCK)
+
+            # Read until no more data is available
+            while True:
+                try:
+                    extra = sys.stdin.read(1)
+                    if not extra:  
+                        break
+                except (BlockingIOError, OSError):
+                    break
+
         finally:
+            # Restore terminal and file status flags
             termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
+            fcntl.fcntl(fd, fcntl.F_SETFL, old_flags)
+        
         return ch
         
-getch=_GetchUnix()
+# Update this to make the code compatible with other systems
+getch=_Getch()
 
 help_message="""CPUTILS
 1-\tTest
