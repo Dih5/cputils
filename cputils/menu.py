@@ -3,6 +3,7 @@
 
 import sys
 import subprocess
+import webbrowser
 
 from .config import config
 
@@ -73,6 +74,7 @@ help_message="""CPUTILS
 1-\tTest
 2-\tSubmit
 3-\tGit add
+b-\tOpen statement in browser
 d-\tDownload problem data
 e-\tOpen in editor
 p-\tChange active problem
@@ -131,6 +133,20 @@ def main():
             print("New language (extension only)?")
             language = input()
             print("ok")
+
+        elif option in "bB":
+            if config["source"]=="kattis":
+                webbrowser.open(f"https://open.kattis.com/problems/{problem}")
+            elif config["source"]=="aceptaelreto":
+                webbrowser.open(f"https://www.aceptaelreto.com/problem/statement.php?id={problem}")
+            elif config["source"]=="aoc":
+                year, day = problem.split("-")
+                webbrowser.open(f"https://adventofcode.com/{year}/day/{day}")
+            elif config["source"].startswith("aoc"):
+                year = config["source"][3:]
+                webbrowser.open(f"https://adventofcode.com/{year}/day/{problem}")
+            else:
+                print(f"Statement not available for source {config['source']}")
 
         elif option in "dD":
             if problem is None:
