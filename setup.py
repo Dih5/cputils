@@ -52,5 +52,5 @@ setup(
         "lxml",
     ],
     url="https://github.com/Dih5/cputils",
-    version='0.4.0',
+    version='0.5.0',
 )
