@@ -20,6 +20,13 @@ def get_format(folder):
         ):
             return "samples-in-ans"
         if (
+            os.path.isdir(os.path.join(folder, "input"))
+            and glob(os.path.join(folder, "input", "*"))
+            and os.path.isdir(os.path.join(folder, "output"))
+            and glob(os.path.join(folder, "output", "*"))
+        ):
+            return "input-output"
+        if (
             os.path.isdir(os.path.join(folder, "inputs"))
             and glob(os.path.join(folder, "inputs", "*"))
             and os.path.isdir(os.path.join(folder, "outputs"))
@@ -34,6 +41,8 @@ def get_inputs(folder):
     sample_format = get_format(folder)
     if sample_format == "samples-in-ans":
         input_pattern = os.path.join("samples", "*.in")
+    elif sample_format == "input-output":
+        input_pattern = os.path.join("input", "*")
     elif sample_format == "inputs-outputs":
         input_pattern = os.path.join("inputs", "*")
     else:
@@ -46,6 +55,22 @@ def input_to_output(folder, inp):
     sample_format = get_format(folder)
     if sample_format == "samples-in-ans":
         return inp[:-2] + "ans"
+    elif sample_format == "input-output":  # TODO: Refactor to avoid repeated code
+        # Try exact match
+        candidate = os.path.join("output", os.path.basename(inp))
+        if os.path.isfile(candidate):
+            return candidate
+
+        # Otherwise, look for a single file with the same number in the name
+        number = "".join(filter(str.isdigit, inp))
+        matching_files = [filename for filename in os.listdir("output") if number in filename]
+        
+        if len(matching_files) == 1:
+            return os.path.join("output", matching_files[0])
+        elif not matching_files:
+            raise ValueError("No matching file found.")
+        else:
+            raise ValueError("Multiple matching files found.")
     elif sample_format == "inputs-outputs":
         # Try exact match
         candidate = os.path.join("outputs", os.path.basename(inp))
